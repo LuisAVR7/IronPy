@@ -109,11 +109,18 @@ export default function Anuncios() {
                 )}
               </div>
               <div className="p-4">
-                <p className="text-xs text-orange-500 font-medium mb-1">{anuncio.categorias?.nombre}</p>
-                <h3 className="font-medium text-gray-900 mb-1 truncate">{anuncio.titulo}</h3>
-                <p className="text-sm text-gray-500 mb-2">{anuncio.departamento}</p>
-                <p className="font-bold text-gray-900">{anuncio.moneda} {anuncio.precio?.toLocaleString()}</p>
-              </div>
+  <div className="flex items-center justify-between mb-1">
+    <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
+    {anuncio.vendido ? (
+      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Vendido</span>
+    ) : (
+      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Disponible</span>
+    )}
+  </div>
+  <h3 className="font-medium text-gray-900 mb-1 truncate">{anuncio.titulo}</h3>
+  <p className="text-sm text-gray-500 mb-2">{anuncio.departamento}</p>
+  <p className="font-bold text-gray-900">{anuncio.moneda} {anuncio.precio?.toLocaleString()}</p>
+</div>
             </Link>
           ))}
         </div>
