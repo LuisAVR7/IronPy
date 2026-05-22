@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { formatPrecio } from '../lib/utils'
 
 export default function DetalleAnuncio() {
   const { id } = useParams()
@@ -12,6 +13,9 @@ export default function DetalleAnuncio() {
   const [subiendoCedula, setSubiendoCedula] = useState(false)
   const [cedulaSubida, setCedulaSubida] = useState(false)
   const [mostrarFormCedula, setMostrarFormCedula] = useState(false)
+  const [documentoExtra, setDocumentoExtra] = useState<File | null>(null)
+  const [subiendoDoc, setSubiendoDoc] = useState(false)
+  const [docSubido, setDocSubido] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -59,7 +63,6 @@ export default function DetalleAnuncio() {
           estado: 'pendiente'
         }, { onConflict: 'anuncio_id,user_id' })
 
-        // Notificar al vendedor por WhatsApp
         if (anuncio?.contacto_telefono) {
           const telefono = anuncio.contacto_telefono.replace(/\D/g, '')
           const mensaje = encodeURIComponent(`Hola, un usuario de IronPY ha cargado su cédula y está formalmente interesado en tu anuncio: ${anuncio.titulo}. Ingresá a tu panel para ver los detalles.`)
@@ -74,8 +77,48 @@ export default function DetalleAnuncio() {
     setSubiendoCedula(false)
   }
 
+  const handleDocumentoExtra = async () => {
+    if (!documentoExtra || !user) return
+    setSubiendoDoc(true)
+    try {
+      const ext = documentoExtra.name.split('.').pop()
+      const path = `${user.id}/${id}/doc_${Date.now()}.${ext}`
+      const { error: uploadError } = await supabase.storage
+        .from('documentos-interesados')
+        .upload(path, documentoExtra)
+
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage
+          .from('documentos-interesados')
+          .getPublicUrl(path)
+
+        const { data: interesado } = await supabase
+          .from('interesados')
+          .select('documentos_urls')
+          .eq('anuncio_id', id)
+          .eq('user_id', user.id)
+          .single()
+
+        const docsActuales = interesado?.documentos_urls || []
+        await supabase.from('interesados').upsert({
+          anuncio_id: id,
+          user_id: user.id,
+          documentos_urls: [...docsActuales, urlData.publicUrl],
+        }, { onConflict: 'anuncio_id,user_id' })
+
+        setDocSubido(true)
+        setDocumentoExtra(null)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+    setSubiendoDoc(false)
+  }
+
   if (loading) return <div className="max-w-4xl mx-auto px-4 py-8 text-gray-500">Cargando...</div>
   if (!anuncio) return <div className="max-w-4xl mx-auto px-4 py-8 text-gray-500">Anuncio no encontrado.</div>
+
+  const esFinanciable = anuncio.forma_pago === 'financiado' || anuncio.forma_pago === 'ambos'
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -112,10 +155,15 @@ export default function DetalleAnuncio() {
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${anuncio.estado === 'nuevo' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
               {anuncio.estado === 'nuevo' ? 'Nuevo' : 'Usado'}
             </span>
+            {anuncio.vendido ? (
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Vendido</span>
+            ) : (
+              <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Disponible</span>
+            )}
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{anuncio.titulo}</h1>
           <p className="text-3xl font-bold text-gray-900 mb-1">
-            {anuncio.moneda} {anuncio.precio?.toLocaleString()}
+            {anuncio.precio ? formatPrecio(anuncio.precio, anuncio.moneda) : 'Consultar precio'}
           </p>
           <p className="text-sm text-gray-500 mb-4">
             {anuncio.forma_pago === 'contado' && 'Solo contado'}
@@ -129,10 +177,11 @@ export default function DetalleAnuncio() {
             {anuncio.modelo && <div><p className="text-xs text-gray-500">Modelo</p><p className="font-medium text-gray-900">{anuncio.modelo}</p></div>}
             {anuncio.año && <div><p className="text-xs text-gray-500">Año</p><p className="font-medium text-gray-900">{anuncio.año}</p></div>}
             {anuncio.color && <div><p className="text-xs text-gray-500">Color</p><p className="font-medium text-gray-900">{anuncio.color}</p></div>}
-            {anuncio.horas_uso && <div><p className="text-xs text-gray-500">Horas de uso</p><p className="font-medium text-gray-900">{anuncio.horas_uso.toLocaleString()} hs</p></div>}
-            {anuncio.kilometraje && <div><p className="text-xs text-gray-500">Kilometraje</p><p className="font-medium text-gray-900">{anuncio.kilometraje.toLocaleString()} km</p></div>}
+            {anuncio.horas_uso && <div><p className="text-xs text-gray-500">Horas de uso</p><p className="font-medium text-gray-900">{anuncio.horas_uso.toLocaleString('es-PY')} hs</p></div>}
+            {anuncio.kilometraje && <div><p className="text-xs text-gray-500">Kilometraje</p><p className="font-medium text-gray-900">{anuncio.kilometraje.toLocaleString('es-PY')} km</p></div>}
             {anuncio.garantia && <div><p className="text-xs text-gray-500">Garantía</p><p className="font-medium text-gray-900">{anuncio.garantia}</p></div>}
             {anuncio.departamento && <div><p className="text-xs text-gray-500">Departamento</p><p className="font-medium text-gray-900">{anuncio.departamento}</p></div>}
+            {anuncio.ciudad && <div><p className="text-xs text-gray-500">Ciudad</p><p className="font-medium text-gray-900">{anuncio.ciudad}</p></div>}
           </div>
 
           {anuncio.descripcion && (
@@ -158,32 +207,30 @@ export default function DetalleAnuncio() {
               )}
 
               {cedulaSubida ? (
-                <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-center">
+                <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-center mb-3">
                   <p className="text-green-700 text-sm font-medium">✓ Cédula enviada correctamente</p>
                   <p className="text-green-600 text-xs mt-1">El vendedor fue notificado por WhatsApp</p>
                 </div>
               ) : mostrarFormCedula ? (
-                <div className="border border-gray-200 rounded-lg p-3">
+                <div className="border border-gray-200 rounded-lg p-3 mb-3">
                   <p className="text-xs text-gray-500 mb-2">Seleccioná una opción para subir tu cédula:</p>
-<div className="flex gap-2 mb-3">
-  <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
-    <span className="text-lg">📷</span>
-    <p className="text-xs text-gray-600 mt-1">Usar cámara</p>
-    <input type="file" accept="image/*" capture="environment"
-      onChange={(e) => setCedula(e.target.files?.[0] || null)}
-      className="hidden" />
-  </label>
-  <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
-    <span className="text-lg">🖼️</span>
-    <p className="text-xs text-gray-600 mt-1">Desde galería</p>
-    <input type="file" accept="image/*"
-      onChange={(e) => setCedula(e.target.files?.[0] || null)}
-      className="hidden" />
-  </label>
-</div>
-{cedula && (
-  <p className="text-xs text-green-600 mb-2">✓ Archivo seleccionado: {cedula.name}</p>
-)}
+                  <div className="flex gap-2 mb-3">
+                    <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
+                      <span className="text-lg">📷</span>
+                      <p className="text-xs text-gray-600 mt-1">Usar cámara</p>
+                      <input type="file" accept="image/*" capture="environment"
+                        onChange={(e) => setCedula(e.target.files?.[0] || null)}
+                        className="hidden" />
+                    </label>
+                    <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
+                      <span className="text-lg">🖼️</span>
+                      <p className="text-xs text-gray-600 mt-1">Desde galería</p>
+                      <input type="file" accept="image/*"
+                        onChange={(e) => setCedula(e.target.files?.[0] || null)}
+                        className="hidden" />
+                    </label>
+                  </div>
+                  {cedula && <p className="text-xs text-green-600 mb-2">✓ Archivo seleccionado: {cedula.name}</p>}
                   <div className="flex gap-2">
                     <button onClick={handleCedula} disabled={!cedula || subiendoCedula}
                       className="flex-1 bg-orange-500 text-white py-2 rounded-lg text-sm font-medium hover:bg-orange-600 disabled:opacity-50">
@@ -196,7 +243,7 @@ export default function DetalleAnuncio() {
                   </div>
                 </div>
               ) : (
-                <div>
+                <div className="mb-3">
                   <button onClick={() => setMostrarFormCedula(true)}
                     className="w-full border border-orange-300 text-orange-600 py-2 rounded-lg text-sm font-medium hover:bg-orange-50">
                     📎 Cargar cédula de identidad
@@ -204,6 +251,44 @@ export default function DetalleAnuncio() {
                   <p className="text-xs text-gray-400 text-center mt-1">
                     Para verificación de datos y formalización del interés
                   </p>
+                </div>
+              )}
+
+              {/* Documentos adicionales para crédito */}
+              {esFinanciable && cedulaSubida && (
+                <div className="border-t border-orange-100 pt-3 mt-3">
+                  <p className="text-xs font-medium text-gray-700 mb-1">Documentos para gestión de crédito</p>
+                  <p className="text-xs text-gray-400 mb-2">Opcional — podés entregar los documentos personalmente al vendedor si preferís.</p>
+                  {docSubido && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-center mb-2">
+                      <p className="text-green-700 text-xs font-medium">✓ Documento enviado</p>
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
+                      <span className="text-base">📷</span>
+                      <p className="text-xs text-gray-600 mt-0.5">Cámara</p>
+                      <input type="file" accept="image/*,application/pdf" capture="environment"
+                        onChange={(e) => setDocumentoExtra(e.target.files?.[0] || null)}
+                        className="hidden" />
+                    </label>
+                    <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
+                      <span className="text-base">📁</span>
+                      <p className="text-xs text-gray-600 mt-0.5">Galería/Archivo</p>
+                      <input type="file" accept="image/*,application/pdf"
+                        onChange={(e) => setDocumentoExtra(e.target.files?.[0] || null)}
+                        className="hidden" />
+                    </label>
+                  </div>
+                  {documentoExtra && (
+                    <div className="mt-2">
+                      <p className="text-xs text-green-600 mb-2">✓ {documentoExtra.name}</p>
+                      <button onClick={handleDocumentoExtra} disabled={subiendoDoc}
+                        className="w-full bg-gray-800 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-700 disabled:opacity-50">
+                        {subiendoDoc ? 'Enviando...' : 'Enviar documento'}
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 

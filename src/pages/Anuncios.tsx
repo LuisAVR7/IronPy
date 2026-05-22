@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { formatPrecio } from '../lib/utils'
 
 export default function Anuncios() {
   const [anuncios, setAnuncios] = useState<any[]>([])
@@ -109,18 +110,20 @@ export default function Anuncios() {
                 )}
               </div>
               <div className="p-4">
-  <div className="flex items-center justify-between mb-1">
-    <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
-    {anuncio.vendido ? (
-      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Vendido</span>
-    ) : (
-      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Disponible</span>
-    )}
-  </div>
-  <h3 className="font-medium text-gray-900 mb-1 truncate">{anuncio.titulo}</h3>
-  <p className="text-sm text-gray-500 mb-2">{anuncio.departamento}</p>
-  <p className="font-bold text-gray-900">{anuncio.moneda} {anuncio.precio?.toLocaleString()}</p>
-</div>
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
+                  {anuncio.vendido ? (
+                    <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Vendido</span>
+                  ) : (
+                    <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Disponible</span>
+                  )}
+                </div>
+                <h3 className="font-medium text-gray-900 mb-1 truncate">{anuncio.titulo}</h3>
+                <p className="text-sm text-gray-500 mb-2">{anuncio.departamento}</p>
+                <p className="font-bold text-gray-900">
+                  {anuncio.precio ? formatPrecio(anuncio.precio, anuncio.moneda) : 'Consultar'}
+                </p>
+              </div>
             </Link>
           ))}
         </div>

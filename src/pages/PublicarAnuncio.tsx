@@ -16,6 +16,7 @@ export default function PublicarAnuncio() {
     moneda: 'USD',
     categoria_id: '',
     departamento: '',
+    ciudad: '',
     año: '',
     horas_uso: '',
     kilometraje: '',
@@ -81,6 +82,7 @@ export default function PublicarAnuncio() {
         moneda: form.moneda,
         categoria_id: form.categoria_id ? parseInt(form.categoria_id) : null,
         departamento: form.departamento,
+        ciudad: form.ciudad,
         año: form.año ? parseInt(form.año) : null,
         horas_uso: form.horas_uso ? parseInt(form.horas_uso) : null,
         kilometraje: form.kilometraje ? parseInt(form.kilometraje) : null,
@@ -141,11 +143,11 @@ export default function PublicarAnuncio() {
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1">Departamento *</label>
-                <select name="departamento" value={form.departamento} onChange={handleChange} required
+                <label className="text-sm font-medium text-gray-700 block mb-1">Estado</label>
+                <select name="estado" value={form.estado} onChange={handleChange}
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
-                  <option value="">Seleccionar</option>
-                  {departamentos.map((d) => <option key={d} value={d}>{d}</option>)}
+                  <option value="usado">Usado</option>
+                  <option value="nuevo">Nuevo</option>
                 </select>
               </div>
             </div>
@@ -191,25 +193,38 @@ export default function PublicarAnuncio() {
                   placeholder="Ej: Amarillo" />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1">Estado</label>
-                <select name="estado" value={form.estado} onChange={handleChange}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
-                  <option value="usado">Usado</option>
-                  <option value="nuevo">Nuevo</option>
-                </select>
+                <label className="text-sm font-medium text-gray-700 block mb-1">Garantía</label>
+                <input name="garantia" value={form.garantia} onChange={handleChange}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+                  placeholder="Ej: 6 meses, sin garantía" />
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 block mb-1">Garantía</label>
-              <input name="garantia" value={form.garantia} onChange={handleChange}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
-                placeholder="Ej: 6 meses, 1 año, sin garantía" />
             </div>
             <div>
               <label className="text-sm font-medium text-gray-700 block mb-1">Descripción</label>
               <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
                 placeholder="Describí el estado, accesorios incluidos, historial de mantenimiento..." />
+            </div>
+          </div>
+        </div>
+
+        {/* Ubicación */}
+        <div className="bg-white border border-gray-200 rounded-xl p-5">
+          <h2 className="font-medium text-gray-900 mb-4">Ubicación</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1">Departamento *</label>
+              <select name="departamento" value={form.departamento} onChange={handleChange} required
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
+                <option value="">Seleccionar</option>
+                {departamentos.map((d) => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1">Ciudad</label>
+              <input name="ciudad" value={form.ciudad} onChange={handleChange}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+                placeholder="Ej: Ciudad del Este" />
             </div>
           </div>
         </div>

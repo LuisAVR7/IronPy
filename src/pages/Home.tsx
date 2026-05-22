@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { formatPrecio } from '../lib/utils'
 
 export default function Home() {
   const [anuncios, setAnuncios] = useState<any[]>([])
@@ -117,9 +118,18 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <div className="bg-gray-900 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">
+      <div className="relative bg-gray-900 text-white py-20 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/95 to-gray-900/80" />
+        <div className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23F97316' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="inline-block bg-orange-500/20 border border-orange-500/30 text-orange-400 text-xs font-medium px-3 py-1 rounded-full mb-4">
+            100% Paraguay — Vendedores locales
+          </div>
+          <h1 className="text-4xl font-bold mb-4 leading-tight">
             Comprá y vendé maquinaria pesada en <span className="text-orange-500">Paraguay</span>
           </h1>
           <p className="text-gray-400 text-lg mb-8">
@@ -166,7 +176,7 @@ export default function Home() {
                 to={`/anuncios/${anuncio.id}`}
                 className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all"
               >
-                <div className="h-40 bg-gray-100 flex items-center justify-center">
+                <div className="h-40 bg-gray-100 flex items-center justify-center relative overflow-hidden">
                   {anuncio.fotos?.[0] ? (
                     <img src={anuncio.fotos[0]} alt={anuncio.titulo} className="w-full h-full object-cover" />
                   ) : (
@@ -174,18 +184,20 @@ export default function Home() {
                   )}
                 </div>
                 <div className="p-4">
-  <div className="flex items-center justify-between mb-1">
-    <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
-    {anuncio.vendido ? (
-      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Vendido</span>
-    ) : (
-      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Disponible</span>
-    )}
-  </div>
-  <h3 className="font-medium text-gray-900 mb-1 truncate">{anuncio.titulo}</h3>
-  <p className="text-sm text-gray-500 mb-2">{anuncio.departamento}</p>
-  <p className="font-bold text-gray-900">{anuncio.moneda} {anuncio.precio?.toLocaleString()}</p>
-</div>
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
+                    {anuncio.vendido ? (
+                      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700">Vendido</span>
+                    ) : (
+                      <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">Disponible</span>
+                    )}
+                  </div>
+                  <h3 className="font-medium text-gray-900 mb-1 truncate">{anuncio.titulo}</h3>
+                  <p className="text-sm text-gray-500 mb-2">{anuncio.departamento}</p>
+                  <p className="font-bold text-gray-900">
+                    {anuncio.precio ? formatPrecio(anuncio.precio, anuncio.moneda) : 'Consultar'}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>
