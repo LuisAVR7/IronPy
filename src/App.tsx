@@ -8,6 +8,7 @@ import Registro from './pages/Registro'
 import MisAnuncios from './pages/MisAnuncios'
 import Terminos from './pages/Terminos'
 import Privacidad from './pages/Privacidad'
+import Planes from './pages/Planes'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/mis-anuncios" element={<MisAnuncios />} />
             <Route path="/terminos" element={<Terminos />} />
             <Route path="/privacidad" element={<Privacidad />} />
+            <Route path="/planes" element={<Planes />} />
           </Routes>
         </main>
         <Footer />

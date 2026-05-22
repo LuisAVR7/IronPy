@@ -23,6 +23,7 @@ export default function Footer() {
         <div>
           <h3 className="text-sm font-medium text-white mb-3">Legal</h3>
           <ul className="flex flex-col gap-2">
+            <li><Link to="/planes" className="text-sm hover:text-orange-500">Planes y precios</Link></li>
             <li><Link to="/terminos" className="text-sm hover:text-orange-500">Términos y condiciones</Link></li>
             <li><Link to="/privacidad" className="text-sm hover:text-orange-500">Política de privacidad</Link></li>
           </ul>
