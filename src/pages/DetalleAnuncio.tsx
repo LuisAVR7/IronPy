@@ -164,9 +164,26 @@ export default function DetalleAnuncio() {
                 </div>
               ) : mostrarFormCedula ? (
                 <div className="border border-gray-200 rounded-lg p-3">
-                  <input type="file" accept="image/*" capture="environment"
-                    onChange={(e) => setCedula(e.target.files?.[0] || null)}
-                    className="text-sm text-gray-600 w-full mb-3" />
+                  <p className="text-xs text-gray-500 mb-2">Seleccioná una opción para subir tu cédula:</p>
+<div className="flex gap-2 mb-3">
+  <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
+    <span className="text-lg">📷</span>
+    <p className="text-xs text-gray-600 mt-1">Usar cámara</p>
+    <input type="file" accept="image/*" capture="environment"
+      onChange={(e) => setCedula(e.target.files?.[0] || null)}
+      className="hidden" />
+  </label>
+  <label className="flex-1 border border-gray-200 rounded-lg p-2 text-center cursor-pointer hover:bg-gray-50">
+    <span className="text-lg">🖼️</span>
+    <p className="text-xs text-gray-600 mt-1">Desde galería</p>
+    <input type="file" accept="image/*"
+      onChange={(e) => setCedula(e.target.files?.[0] || null)}
+      className="hidden" />
+  </label>
+</div>
+{cedula && (
+  <p className="text-xs text-green-600 mb-2">✓ Archivo seleccionado: {cedula.name}</p>
+)}
                   <div className="flex gap-2">
                     <button onClick={handleCedula} disabled={!cedula || subiendoCedula}
                       className="flex-1 bg-orange-500 text-white py-2 rounded-lg text-sm font-medium hover:bg-orange-600 disabled:opacity-50">
