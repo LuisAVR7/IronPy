@@ -7,7 +7,7 @@ export default function DetalleAnuncio() {
   const [anuncio, setAnuncio] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [fotoActiva, setFotoActiva] = useState(0)
-  const [user, setUser] = useState<any>(null)
+  const [_user, setUser] = useState<any>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

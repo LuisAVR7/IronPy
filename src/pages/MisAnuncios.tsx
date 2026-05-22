@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 export default function MisAnuncios() {
   const [anuncios, setAnuncios] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any>(null)
+  const [_user, setUser] = useState<any>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
