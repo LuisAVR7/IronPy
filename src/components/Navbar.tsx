@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 function Logo() {
   return (
     <svg width="260" height="52" viewBox="0 0 260 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Tractor -->
       <circle cx="16" cy="36" r="12" fill="none" stroke="#F97316" strokeWidth="2"/>
       <circle cx="16" cy="36" r="5" fill="none" stroke="#F97316" strokeWidth="1.5"/>
       <circle cx="16" cy="36" r="1.5" fill="#F97316"/>
@@ -17,11 +16,7 @@ function Logo() {
       <rect x="18" y="19" width="11" height="8" rx="1" fill="#1F2937"/>
       <rect x="34" y="17" width="3" height="9" rx="1.5" fill="#EA580C"/>
       <rect x="16" y="43" width="38" height="4" rx="1.5" fill="#EA580C"/>
-
-      <!-- Separador -->
       <rect x="62" y="10" width="1" height="32" rx="0.5" fill="#F97316" opacity="0.3"/>
-
-      <!-- Camión -->
       <rect x="68" y="18" width="20" height="22" rx="2" fill="#F97316"/>
       <rect x="70" y="20" width="16" height="10" rx="1" fill="#1F2937"/>
       <rect x="88" y="22" width="36" height="18" rx="1.5" fill="#EA580C"/>
@@ -38,15 +33,9 @@ function Logo() {
       <circle cx="119" cy="45" r="7" fill="none" stroke="#F97316" strokeWidth="2"/>
       <circle cx="119" cy="45" r="2.5" fill="none" stroke="#F97316" strokeWidth="1.5"/>
       <circle cx="119" cy="45" r="1" fill="#F97316"/>
-
-      <!-- Separador antes del texto -->
       <rect x="134" y="10" width="1.5" height="32" rx="0.5" fill="#F97316" opacity="0.4"/>
-
-      <!-- Texto IronPY -->
       <text x="142" y="34" fontFamily="Arial Black, sans-serif" fontSize="24" fontWeight="900" fill="white">Iron</text>
       <text x="200" y="34" fontFamily="Arial Black, sans-serif" fontSize="24" fontWeight="900" fill="#F97316">PY</text>
-
-      <!-- Subtítulo -->
       <text x="142" y="46" fontFamily="Arial, sans-serif" fontSize="7.5" fill="#9CA3AF" letterSpacing="1.5">MAQUINARIAS PESADAS Y CAMIONES</text>
     </svg>
   )
