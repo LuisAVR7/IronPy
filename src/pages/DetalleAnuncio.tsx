@@ -22,16 +22,19 @@ export default function DetalleAnuncio() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
     })
-    const fetchAnuncio = async () => {
-      const { data } = await supabase
-        .from('anuncios')
-        .select('*, categorias(nombre)')
-        .eq('id', id)
-        .single()
-      setAnuncio(data)
-      setLoading(false)
-    }
-    fetchAnuncio()
+   const fetchAnuncio = async () => {
+  const { data } = await supabase
+    .from('anuncios')
+    .select('*, categorias(nombre)')
+    .eq('id', id)
+    .single()
+  setAnuncio(data)
+  setLoading(false)
+
+  // Registrar visita
+  await supabase.from('visitas').insert({ anuncio_id: id })
+}
+fetchAnuncio()
   }, [id])
 
   const handleWhatsApp = () => {

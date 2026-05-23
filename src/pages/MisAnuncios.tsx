@@ -21,14 +21,14 @@ export default function MisAnuncios() {
   }, [])
 
   const fetchAnuncios = async (userId: string) => {
-    const { data } = await supabase
-      .from('anuncios')
-      .select('*, categorias(nombre)')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-    setAnuncios(data || [])
-    setLoading(false)
-  }
+  const { data } = await supabase
+    .from('anuncios')
+    .select('*, categorias(nombre), visitas(count)')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+  setAnuncios(data || [])
+  setLoading(false)
+}
 
   const fetchInteresados = async (anuncioId: string) => {
     if (anuncioAbierto === anuncioId) {
@@ -93,7 +93,8 @@ export default function MisAnuncios() {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
                   <h3 className="font-medium text-gray-900 truncate">{anuncio.titulo}</h3>
-                  <p className="text-sm text-gray-500">{anuncio.moneda} {anuncio.precio?.toLocaleString('es-PY')}</p>
+<p className="text-sm text-gray-500">{anuncio.moneda} {anuncio.precio?.toLocaleString('es-PY')}</p>
+<p className="text-xs text-gray-400 mt-0.5">👁 {anuncio.visitas?.[0]?.count || 0} visitas</p>
                   <div className="flex gap-2 mt-1">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${anuncio.activo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                       {anuncio.activo ? 'Activo' : 'Pausado'}
