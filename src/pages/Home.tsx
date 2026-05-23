@@ -4,35 +4,35 @@ import { supabase } from '../lib/supabase'
 import { formatPrecio } from '../lib/utils'
 
 export default function Home() {
- const [anuncios, setAnuncios] = useState<any[]>([])
-const [loading, setLoading] = useState(true)
-const [totalAnuncios, setTotalAnuncios] = useState(0)
-const [totalVendedores, setTotalVendedores] = useState(0)
+  const [anuncios, setAnuncios] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [totalAnuncios, setTotalAnuncios] = useState(0)
+  const [totalVendedores, setTotalVendedores] = useState(0)
 
   useEffect(() => {
-  const fetchData = async () => {
-    const { data } = await supabase
-      .from('anuncios')
-      .select('*, categorias(nombre)')
-      .eq('activo', true)
-      .order('created_at', { ascending: false })
-      .limit(6)
-    setAnuncios(data || [])
-    setLoading(false)
+    const fetchData = async () => {
+      const { data } = await supabase
+        .from('anuncios')
+        .select('*, categorias(nombre)')
+        .eq('activo', true)
+        .order('created_at', { ascending: false })
+        .limit(6)
+      setAnuncios(data || [])
+      setLoading(false)
 
-    const { count: countAnuncios } = await supabase
-      .from('anuncios')
-      .select('*', { count: 'exact', head: true })
-      .eq('activo', true)
-    setTotalAnuncios(countAnuncios || 0)
+      const { count: countAnuncios } = await supabase
+        .from('anuncios')
+        .select('*', { count: 'exact', head: true })
+        .eq('activo', true)
+      setTotalAnuncios(countAnuncios || 0)
 
-    const { count: countVendedores } = await supabase
-      .from('profiles')
-      .select('*', { count: 'exact', head: true })
-    setTotalVendedores(countVendedores || 0)
-  }
-  fetchData()
-}, [])
+      const { count: countVendedores } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+      setTotalVendedores(countVendedores || 0)
+    }
+    fetchData()
+  }, [])
 
   const categorias = [
     {
@@ -140,30 +140,33 @@ const [totalVendedores, setTotalVendedores] = useState(0)
         />
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-block bg-orange-500/20 border border-orange-500/30 text-orange-400 text-xs font-medium px-3 py-1 rounded-full mb-4">
-  100% Paraguay — Vendedores locales
-</div>
-<div className="flex justify-center gap-8 mb-6">
-  <div className="text-center">
-    <p className="text-3xl font-bold text-white">{totalAnuncios}</p>
-    <p className="text-xs text-gray-400 mt-1">Anuncios activos</p>
-  </div>
-  <div className="w-px bg-gray-700"/>
-  <div className="text-center">
-    <p className="text-3xl font-bold text-white">2.100+</p>
-    <p className="text-xs text-gray-400 mt-1">Contactos del sector</p>
-  </div>
-  <div className="w-px bg-gray-700"/>
-  <div className="text-center">
-    <p className="text-3xl font-bold text-white">{totalVendedores}</p>
-    <p className="text-xs text-gray-400 mt-1">Vendedores registrados</p>
-  </div>
-</div>
+            100% Paraguay — Vendedores locales
+          </div>
           <h1 className="text-4xl font-bold mb-4 leading-tight">
             Comprá y vendé maquinaria pesada en <span className="text-orange-500">Paraguay</span>
           </h1>
-          <p className="text-gray-400 text-lg mb-8">
+          <p className="text-gray-400 text-lg mb-6">
             El clasificado local especializado en maquinaria de construcción, agrícola y camiones.
           </p>
+
+          {/* Contadores */}
+          <div className="flex justify-center gap-8 mb-8">
+            <div className="text-center">
+              <p className="text-3xl font-bold text-white">{totalAnuncios}</p>
+              <p className="text-xs text-gray-400 mt-1">Anuncios activos</p>
+            </div>
+            <div className="w-px bg-gray-700"/>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-white">2.100+</p>
+              <p className="text-xs text-gray-400 mt-1">Contactos del sector</p>
+            </div>
+            <div className="w-px bg-gray-700"/>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-white">{totalVendedores}</p>
+              <p className="text-xs text-gray-400 mt-1">Vendedores registrados</p>
+            </div>
+          </div>
+
           <div className="flex gap-3 justify-center">
             <Link to="/anuncios" className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600">
               Ver anuncios
