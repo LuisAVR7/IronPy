@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { formatPrecio } from '../lib/utils'
+import { Helmet } from 'react-helmet-async'
 
 export default function Anuncios() {
   const [anuncios, setAnuncios] = useState<any[]>([])
@@ -71,6 +72,13 @@ export default function Anuncios() {
   const hayFiltros = busqueda || departamento || marca || estado || precioMin || precioMax || categoriaFiltro
 
   return (
+    return (
+  <>
+    <Helmet>
+      <title>Anuncios — IronPY Maquinarias Paraguay</title>
+      <meta name="description" content="Buscá maquinaria de construcción, agrícola, camiones, implementos y repuestos en Paraguay. Filtros por categoría, departamento, marca y precio." />
+      <meta name="robots" content="index, follow" />
+    </Helmet>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Anuncios</h1>
 

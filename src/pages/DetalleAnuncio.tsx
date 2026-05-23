@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { formatPrecio } from '../lib/utils'
+import { Helmet } from 'react-helmet-async'
 
 export default function DetalleAnuncio() {
   const { id } = useParams()
@@ -138,6 +139,17 @@ export default function DetalleAnuncio() {
   const esFinanciable = anuncio.forma_pago === 'financiado' || anuncio.forma_pago === 'ambos'
 
   return (
+    return (
+  <>
+    <Helmet>
+      <title>{anuncio.titulo} — IronPY</title>
+      <meta name="description" content={`${anuncio.marca || ''} ${anuncio.modelo || ''} ${anuncio.año || ''} — ${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — ${anuncio.departamento} — IronPY Maquinarias Paraguay`} />
+      <meta property="og:title" content={`${anuncio.titulo} — IronPY`} />
+      <meta property="og:description" content={`${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — ${anuncio.departamento}`} />
+      {anuncio.fotos?.[0] && <meta property="og:image" content={anuncio.fotos[0]} />}
+      <meta property="og:url" content={window.location.href} />
+      <meta name="robots" content="index, follow" />
+    </Helmet>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <Link to="/anuncios" className="text-sm text-orange-500 hover:underline mb-4 inline-block">
         ← Volver a anuncios

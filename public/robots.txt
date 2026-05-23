@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /anuncios
+Allow: /planes
+Allow: /terminos
+Allow: /privacidad
+
+Disallow: /login
+Disallow: /registro
+Disallow: /mis-anuncios
+Disallow: /perfil
+Disallow: /publicar
+
+Sitemap: https://iron-py.vercel.app/sitemap.xml
