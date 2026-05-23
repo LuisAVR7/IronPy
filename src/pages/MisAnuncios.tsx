@@ -82,8 +82,6 @@ export default function MisAnuncios() {
         <div className="flex flex-col gap-4">
           {anuncios.map((anuncio) => (
             <div key={anuncio.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-              
-              {/* Fila del anuncio */}
               <div className="p-4 flex gap-4 items-center">
                 <div className="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 overflow-hidden">
                   {anuncio.fotos?.[0] ? (
@@ -95,7 +93,7 @@ export default function MisAnuncios() {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-orange-500 font-medium">{anuncio.categorias?.nombre}</p>
                   <h3 className="font-medium text-gray-900 truncate">{anuncio.titulo}</h3>
-                  <p className="text-sm text-gray-500">{anuncio.moneda} {anuncio.precio?.toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">{anuncio.moneda} {anuncio.precio?.toLocaleString('es-PY')}</p>
                   <div className="flex gap-2 mt-1">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${anuncio.activo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                       {anuncio.activo ? 'Activo' : 'Pausado'}
@@ -111,6 +109,10 @@ export default function MisAnuncios() {
                   <Link to={`/anuncios/${anuncio.id}`}
                     className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50">
                     Ver
+                  </Link>
+                  <Link to={`/anuncios/${anuncio.id}/editar`}
+                    className="text-xs border border-orange-200 text-orange-600 px-3 py-1.5 rounded-lg hover:bg-orange-50">
+                    Editar
                   </Link>
                   <button onClick={() => handleToggleActivo(anuncio.id, anuncio.activo)}
                     className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50">
@@ -131,7 +133,6 @@ export default function MisAnuncios() {
                 </div>
               </div>
 
-              {/* Panel de interesados */}
               {anuncioAbierto === anuncio.id && (
                 <div className="border-t border-gray-100 bg-gray-50 p-4">
                   <h4 className="text-sm font-medium text-gray-700 mb-3">Interesados</h4>
@@ -156,6 +157,16 @@ export default function MisAnuncios() {
                               className="text-xs bg-orange-500 text-white px-3 py-1.5 rounded-lg hover:bg-orange-600">
                               Ver cédula
                             </a>
+                          )}
+                          {interesado.documentos_urls?.length > 0 && (
+                            <div className="flex gap-1">
+                              {interesado.documentos_urls.map((url: string, i: number) => (
+                                <a key={i} href={url} target="_blank" rel="noopener noreferrer"
+                                  className="text-xs bg-gray-700 text-white px-3 py-1.5 rounded-lg hover:bg-gray-800">
+                                  Doc {i + 1}
+                                </a>
+                              ))}
+                            </div>
                           )}
                           {interesado.profiles?.telefono && (
                             <a href={`https://wa.me/595${interesado.profiles.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, te contacto desde IronPY en relación a tu interés en mi anuncio.')}`}

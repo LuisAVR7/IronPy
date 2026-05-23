@@ -3,9 +3,11 @@ import Home from './pages/Home'
 import Anuncios from './pages/Anuncios'
 import DetalleAnuncio from './pages/DetalleAnuncio'
 import PublicarAnuncio from './pages/PublicarAnuncio'
+import EditarAnuncio from './pages/EditarAnuncio'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
 import MisAnuncios from './pages/MisAnuncios'
+import Perfil from './pages/Perfil'
 import Terminos from './pages/Terminos'
 import Privacidad from './pages/Privacidad'
 import Planes from './pages/Planes'
@@ -23,9 +25,11 @@ function App() {
             <Route path="/anuncios" element={<Anuncios />} />
             <Route path="/anuncios/:id" element={<DetalleAnuncio />} />
             <Route path="/publicar" element={<PublicarAnuncio />} />
+            <Route path="/anuncios/:id/editar" element={<EditarAnuncio />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
             <Route path="/mis-anuncios" element={<MisAnuncios />} />
+            <Route path="/perfil" element={<Perfil />} />
             <Route path="/terminos" element={<Terminos />} />
             <Route path="/privacidad" element={<Privacidad />} />
             <Route path="/planes" element={<Planes />} />

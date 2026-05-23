@@ -44,6 +44,7 @@ function Logo() {
 export default function Navbar() {
   const [user, setUser] = useState<any>(null)
   const [perfil, setPerfil] = useState<any>(null)
+  const [menuAbierto, setMenuAbierto] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
+    setMenuAbierto(false)
     navigate('/')
   }
 
@@ -83,16 +85,36 @@ export default function Navbar() {
           <Link to="/anuncios" className="text-sm text-gray-300 hover:text-white">Anuncios</Link>
           <Link to="/planes" className="text-sm text-gray-300 hover:text-white">Planes</Link>
           {user ? (
-            <>
-              <span className="text-sm text-gray-300">
-                Hola, <span className="text-orange-500 font-medium">{perfil?.nombre || user.email}</span>
-              </span>
-              <Link to="/mis-anuncios" className="text-sm text-gray-300 hover:text-white">Mis anuncios</Link>
-              <Link to="/publicar" className="bg-orange-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-orange-600">
-                Publicar
-              </Link>
-              <button onClick={handleLogout} className="text-sm text-gray-300 hover:text-white">Salir</button>
-            </>
+            <div className="relative">
+              <button
+                onClick={() => setMenuAbierto(!menuAbierto)}
+                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white">
+                <span>Hola, <span className="text-orange-500 font-medium">{perfil?.nombre || user.email}</span></span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {menuAbierto && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+                  <Link to="/mis-anuncios" onClick={() => setMenuAbierto(false)}
+                    className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                    📋 Mis anuncios
+                  </Link>
+                  <Link to="/publicar" onClick={() => setMenuAbierto(false)}
+                    className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                    ➕ Publicar anuncio
+                  </Link>
+                  <Link to="/perfil" onClick={() => setMenuAbierto(false)}
+                    className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
+                    👤 Mi perfil
+                  </Link>
+                  <button onClick={handleLogout}
+                    className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50">
+                    🚪 Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link to="/login" className="text-sm text-gray-300 hover:text-white">Ingresar</Link>
