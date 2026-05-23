@@ -7,6 +7,9 @@ export default function Perfil() {
   const [guardando, setGuardando] = useState(false)
   const [mensaje, setMensaje] = useState('')
   const [user, setUser] = useState<any>(null)
+  const [perfil, setPerfil] = useState<any>(null)
+  const [cedula, setCedula] = useState<File | null>(null)
+  const [subiendoCedula, setSubiendoCedula] = useState(false)
   const navigate = useNavigate()
 
   const [form, setForm] = useState({
@@ -22,10 +25,11 @@ export default function Perfil() {
       setUser(session.user)
       const { data } = await supabase
         .from('profiles')
-        .select('nombre, telefono, ciudad, email')
+        .select('nombre, telefono, ciudad, email, verificado, cedula_url')
         .eq('id', session.user.id)
         .single()
       if (data) {
+        setPerfil(data)
         setForm({
           nombre: data.nombre || '',
           telefono: data.telefono || '',
@@ -57,15 +61,62 @@ export default function Perfil() {
       setMensaje('Error al guardar. Intentá de nuevo.')
     } else {
       setMensaje('Perfil actualizado correctamente.')
+      setPerfil({ ...perfil, nombre: form.nombre, telefono: form.telefono, ciudad: form.ciudad })
     }
     setGuardando(false)
+  }
+
+  const handleCedula = async () => {
+    if (!cedula || !user) return
+    setSubiendoCedula(true)
+    try {
+      const ext = cedula.name.split('.').pop()
+      const path = `${user.id}/cedula_propia.${ext}`
+      const { error: uploadError } = await supabase.storage
+        .from('documentos-interesados')
+        .upload(path, cedula, { upsert: true })
+
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage
+          .from('documentos-interesados')
+          .getPublicUrl(path)
+
+        const perfilCompleto = form.nombre && form.telefono && form.ciudad
+
+        await supabase.from('profiles').update({
+          cedula_url: urlData.publicUrl,
+          verificado: perfilCompleto,
+        }).eq('id', user.id)
+
+        setPerfil({ ...perfil, cedula_url: urlData.publicUrl, verificado: perfilCompleto })
+        setMensaje(perfilCompleto ? '✓ Cédula cargada. Tu perfil quedó verificado.' : '✓ Cédula cargada. Completá nombre, teléfono y ciudad para verificar tu perfil.')
+        setCedula(null)
+      }
+    } catch (err) {
+      setMensaje('Error al cargar la cédula. Intentá de nuevo.')
+    }
+    setSubiendoCedula(false)
   }
 
   if (loading) return <div className="max-w-xl mx-auto px-4 py-8 text-gray-500">Cargando...</div>
 
   return (
     <div className="max-w-xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Mi perfil</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900">Mi perfil</h1>
+        {perfil?.verificado && (
+          <span className="bg-green-100 text-green-700 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
+            ✓ Vendedor verificado
+          </span>
+        )}
+      </div>
+
+      {!perfil?.verificado && (
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+          <p className="text-sm font-medium text-orange-700 mb-1">¿Cómo verificar tu perfil?</p>
+          <p className="text-sm text-orange-600">Completá tu nombre, teléfono y ciudad, y cargá tu cédula de identidad. El badge de vendedor verificado genera más confianza en los compradores.</p>
+        </div>
+      )}
 
       {mensaje && (
         <div className={`text-sm rounded-lg px-4 py-3 mb-4 ${mensaje.includes('Error') ? 'bg-red-50 border border-red-200 text-red-600' : 'bg-green-50 border border-green-200 text-green-700'}`}>
@@ -111,6 +162,44 @@ export default function Perfil() {
           {guardando ? 'Guardando...' : 'Guardar cambios'}
         </button>
       </form>
+
+      {/* Sección cédula */}
+      <div className="bg-white border border-gray-200 rounded-xl p-5 mt-5">
+        <h2 className="font-medium text-gray-900 mb-1">Verificación de identidad</h2>
+        <p className="text-xs text-gray-500 mb-4">Tu cédula es privada y solo es usada para verificar tu identidad como vendedor.</p>
+
+        {perfil?.cedula_url ? (
+          <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4">
+            <p className="text-green-700 text-sm font-medium">✓ Cédula cargada correctamente</p>
+          </div>
+        ) : null}
+
+        <div className="flex gap-2 mb-3">
+          <label className="flex-1 border border-gray-200 rounded-lg p-3 text-center cursor-pointer hover:bg-gray-50">
+            <span className="text-2xl">📷</span>
+            <p className="text-xs text-gray-600 mt-1">Usar cámara</p>
+            <input type="file" accept="image/*" capture="environment"
+              onChange={(e) => setCedula(e.target.files?.[0] || null)}
+              className="hidden" />
+          </label>
+          <label className="flex-1 border border-gray-200 rounded-lg p-3 text-center cursor-pointer hover:bg-gray-50">
+            <span className="text-2xl">🖼️</span>
+            <p className="text-xs text-gray-600 mt-1">Desde galería</p>
+            <input type="file" accept="image/*"
+              onChange={(e) => setCedula(e.target.files?.[0] || null)}
+              className="hidden" />
+          </label>
+        </div>
+
+        {cedula && (
+          <p className="text-xs text-green-600 mb-3">✓ Archivo seleccionado: {cedula.name}</p>
+        )}
+
+        <button onClick={handleCedula} disabled={!cedula || subiendoCedula}
+          className="w-full bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 disabled:opacity-50">
+          {subiendoCedula ? 'Subiendo...' : perfil?.cedula_url ? 'Actualizar cédula' : 'Cargar cédula'}
+        </button>
+      </div>
     </div>
   )
 }

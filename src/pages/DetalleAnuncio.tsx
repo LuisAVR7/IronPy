@@ -7,6 +7,7 @@ import { formatPrecio } from '../lib/utils'
 export default function DetalleAnuncio() {
   const { id } = useParams()
   const [anuncio, setAnuncio] = useState<any>(null)
+  const [vendedor, setVendedor] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [fotoActiva, setFotoActiva] = useState(0)
   const [user, setUser] = useState<any>(null)
@@ -36,6 +37,16 @@ export default function DetalleAnuncio() {
         .eq('id', id)
         .single()
       setAnuncio(data)
+
+      if (data?.user_id) {
+        const { data: perfilVendedor } = await supabase
+          .from('profiles')
+          .select('nombre, verificado')
+          .eq('id', data.user_id)
+          .single()
+        setVendedor(perfilVendedor)
+      }
+
       setLoading(false)
       await supabase.from('visitas').insert({ anuncio_id: id })
     }
@@ -188,7 +199,6 @@ export default function DetalleAnuncio() {
           )}
         </div>
 
-        {/* Formulario de reporte */}
         {mostrarReporte && user && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
             <h3 className="text-sm font-medium text-red-700 mb-3">Reportar este anuncio</h3>
@@ -240,7 +250,6 @@ export default function DetalleAnuncio() {
               </div>
             )}
 
-            {/* Compartir */}
             <div className="mt-4">
               <p className="text-xs text-gray-500 mb-2">Compartir este anuncio</p>
               <div className="flex gap-2">
@@ -289,7 +298,6 @@ export default function DetalleAnuncio() {
               {anuncio.forma_pago === 'ambos' && `Contado o financiado${anuncio.cuotas ? ` en ${anuncio.cuotas} cuotas` : ''}`}
             </p>
 
-            {/* Especificaciones */}
             <div className="bg-gray-50 rounded-xl p-4 mb-4 grid grid-cols-2 gap-3">
               {anuncio.marca && <div><p className="text-xs text-gray-500">Marca</p><p className="font-medium text-gray-900">{anuncio.marca}</p></div>}
               {anuncio.modelo && <div><p className="text-xs text-gray-500">Modelo</p><p className="font-medium text-gray-900">{anuncio.modelo}</p></div>}
@@ -312,7 +320,14 @@ export default function DetalleAnuncio() {
             {/* Contacto */}
             {user ? (
               <div className="bg-orange-50 border border-orange-100 rounded-xl p-4">
-                <p className="text-sm font-medium text-gray-700 mb-3">Contacto</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <p className="text-sm font-medium text-gray-700">Contacto</p>
+                  {vendedor?.verificado && (
+                    <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded-full flex items-center gap-1">
+                      ✓ Vendedor verificado
+                    </span>
+                  )}
+                </div>
                 {anuncio.contacto_nombre && <p className="text-sm text-gray-900 font-medium mb-2">{anuncio.contacto_nombre}</p>}
                 {anuncio.contacto_telefono && (
                   <button onClick={handleWhatsApp}
@@ -372,7 +387,6 @@ export default function DetalleAnuncio() {
                   </div>
                 )}
 
-                {/* Documentos adicionales para crédito */}
                 {esFinanciable && cedulaSubida && (
                   <div className="border-t border-orange-100 pt-3 mt-3">
                     <p className="text-xs font-medium text-gray-700 mb-1">Documentos para gestión de crédito</p>
