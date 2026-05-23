@@ -4,22 +4,35 @@ import { supabase } from '../lib/supabase'
 import { formatPrecio } from '../lib/utils'
 
 export default function Home() {
-  const [anuncios, setAnuncios] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+ const [anuncios, setAnuncios] = useState<any[]>([])
+const [loading, setLoading] = useState(true)
+const [totalAnuncios, setTotalAnuncios] = useState(0)
+const [totalVendedores, setTotalVendedores] = useState(0)
 
   useEffect(() => {
-    const fetchAnuncios = async () => {
-      const { data } = await supabase
-        .from('anuncios')
-        .select('*, categorias(nombre)')
-        .eq('activo', true)
-        .order('created_at', { ascending: false })
-        .limit(6)
-      setAnuncios(data || [])
-      setLoading(false)
-    }
-    fetchAnuncios()
-  }, [])
+  const fetchData = async () => {
+    const { data } = await supabase
+      .from('anuncios')
+      .select('*, categorias(nombre)')
+      .eq('activo', true)
+      .order('created_at', { ascending: false })
+      .limit(6)
+    setAnuncios(data || [])
+    setLoading(false)
+
+    const { count: countAnuncios } = await supabase
+      .from('anuncios')
+      .select('*', { count: 'exact', head: true })
+      .eq('activo', true)
+    setTotalAnuncios(countAnuncios || 0)
+
+    const { count: countVendedores } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+    setTotalVendedores(countVendedores || 0)
+  }
+  fetchData()
+}, [])
 
   const categorias = [
     {
@@ -127,8 +140,24 @@ export default function Home() {
         />
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-block bg-orange-500/20 border border-orange-500/30 text-orange-400 text-xs font-medium px-3 py-1 rounded-full mb-4">
-            100% Paraguay — Vendedores locales
-          </div>
+  100% Paraguay — Vendedores locales
+</div>
+<div className="flex justify-center gap-8 mb-6">
+  <div className="text-center">
+    <p className="text-3xl font-bold text-white">{totalAnuncios}</p>
+    <p className="text-xs text-gray-400 mt-1">Anuncios activos</p>
+  </div>
+  <div className="w-px bg-gray-700"/>
+  <div className="text-center">
+    <p className="text-3xl font-bold text-white">2.100+</p>
+    <p className="text-xs text-gray-400 mt-1">Contactos del sector</p>
+  </div>
+  <div className="w-px bg-gray-700"/>
+  <div className="text-center">
+    <p className="text-3xl font-bold text-white">{totalVendedores}</p>
+    <p className="text-xs text-gray-400 mt-1">Vendedores registrados</p>
+  </div>
+</div>
           <h1 className="text-4xl font-bold mb-4 leading-tight">
             Comprá y vendé maquinaria pesada en <span className="text-orange-500">Paraguay</span>
           </h1>
