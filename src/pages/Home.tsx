@@ -37,8 +37,7 @@ export default function Home() {
 
   const categorias = [
     {
-      nombre: 'Construcción',
-      slug: 'construccion',
+      nombre: 'Construcción', slug: 'construccion',
       svg: (
         <svg viewBox="0 0 64 64" className="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="38" width="60" height="10" rx="2" fill="#F97316"/>
@@ -56,8 +55,7 @@ export default function Home() {
       )
     },
     {
-      nombre: 'Agrícola',
-      slug: 'agricola',
+      nombre: 'Agrícola', slug: 'agricola',
       svg: (
         <svg viewBox="0 0 64 64" className="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="8" y="28" width="35" height="18" rx="3" fill="#F97316"/>
@@ -77,8 +75,7 @@ export default function Home() {
       )
     },
     {
-      nombre: 'Camiones',
-      slug: 'camiones',
+      nombre: 'Camiones', slug: 'camiones',
       svg: (
         <svg viewBox="0 0 64 64" className="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="24" width="38" height="22" rx="2" fill="#F97316"/>
@@ -99,8 +96,7 @@ export default function Home() {
       )
     },
     {
-      nombre: 'Implementos',
-      slug: 'implementos',
+      nombre: 'Implementos', slug: 'implementos',
       svg: (
         <svg viewBox="0 0 64 64" className="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M8 48 L8 20 L20 20 L20 48 Z" fill="#F97316"/>
@@ -113,8 +109,7 @@ export default function Home() {
       )
     },
     {
-      nombre: 'Repuestos',
-      slug: 'repuestos',
+      nombre: 'Repuestos', slug: 'repuestos',
       svg: (
         <svg viewBox="0 0 64 64" className="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="32" cy="32" r="20" fill="#1F2937" stroke="#F97316" strokeWidth="3"/>
@@ -178,14 +173,29 @@ export default function Home() {
               </div>
             </div>
 
-           <div className="flex gap-3 justify-center">
-  <Link to="/anuncios" className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600">
-    Ver anuncios
-  </Link>
-  <Link to="/publicar" className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900">
-    Publicar gratis
-  </Link>
-</div>
+            <div className="flex gap-3 justify-center mb-8">
+              <Link to="/anuncios" className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600">
+                Ver anuncios
+              </Link>
+              <Link to="/publicar" className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900">
+                Publicar gratis
+              </Link>
+            </div>
+
+            {/* Gancho vendedor verificado */}
+            <div className="bg-white/5 border border-white/10 rounded-xl px-6 py-4 max-w-xl mx-auto">
+              <div className="flex items-center justify-between gap-4">
+                <div className="text-left">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">✓ Vendedor verificado</span>
+                  </div>
+                  <p className="text-sm text-gray-300">Los vendedores verificados generan más confianza y cierran más ventas. Es gratis y tarda menos de 2 minutos.</p>
+                </div>
+                <Link to="/perfil" className="flex-shrink-0 bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 whitespace-nowrap">
+                  Verificar perfil
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 

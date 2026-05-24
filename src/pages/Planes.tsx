@@ -11,8 +11,10 @@ export default function Planes() {
         { texto: 'Anuncios ilimitados', incluido: true },
         { texto: '5 fotos por anuncio', incluido: true },
         { texto: 'Visible en el listado general', incluido: true },
+        { texto: 'Badge de vendedor verificado', incluido: true },
         { texto: 'Anuncios destacados', incluido: false },
         { texto: 'Estadísticas de visitas', incluido: false },
+        { texto: 'Indexado en Google', incluido: false },
         { texto: 'Acceso al directorio de constructoras', incluido: false },
       ],
       boton: 'Publicar gratis',
@@ -30,7 +32,9 @@ export default function Planes() {
         { texto: 'Anuncios ilimitados', incluido: true },
         { texto: '10 fotos por anuncio', incluido: true },
         { texto: 'Anuncios destacados en el listado', incluido: true },
+        { texto: 'Badge de vendedor verificado', incluido: true },
         { texto: 'Estadísticas básicas de visitas', incluido: true },
+        { texto: 'Indexado en Google', incluido: true },
         { texto: 'Soporte prioritario', incluido: true },
         { texto: 'Acceso al directorio de constructoras', incluido: false },
       ],
@@ -49,7 +53,9 @@ export default function Planes() {
         { texto: 'Anuncios ilimitados', incluido: true },
         { texto: 'Fotos ilimitadas por anuncio', incluido: true },
         { texto: 'Primeros resultados siempre', incluido: true },
+        { texto: 'Badge de vendedor verificado', incluido: true },
         { texto: 'Estadísticas completas de visitas', incluido: true },
+        { texto: 'Indexado en Google', incluido: true },
         { texto: 'Soporte prioritario', incluido: true },
         { texto: 'Acceso al directorio de constructoras', incluido: true },
       ],
@@ -64,6 +70,20 @@ export default function Planes() {
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-gray-900 mb-3">Planes de publicación</h1>
         <p className="text-gray-500">Elegí el plan que mejor se adapta a tu necesidad. Todos incluyen anuncios ilimitados.</p>
+      </div>
+
+      {/* Gancho vendedor verificado */}
+      <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-4 mb-8 flex items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">✓ Vendedor verificado</span>
+            <span className="text-xs text-green-700 font-medium">Disponible en todos los planes</span>
+          </div>
+          <p className="text-sm text-green-700">Los compradores priorizan a los vendedores verificados. Verificá tu identidad gratis desde tu perfil y generá más confianza en cada anuncio.</p>
+        </div>
+        <a href="/perfil" className="flex-shrink-0 bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 whitespace-nowrap">
+          Verificar perfil
+        </a>
       </div>
 
       <div className="grid grid-cols-3 gap-6 mb-12">
@@ -110,6 +130,17 @@ export default function Planes() {
             )}
           </div>
         ))}
+      </div>
+
+      {/* Diferenciador Google */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl">🔍</div>
+          <div>
+            <h3 className="font-bold text-gray-900 mb-1">Aparecé en Google con los planes Profesional y Premium</h3>
+            <p className="text-sm text-gray-600">Los anuncios de planes gratuitos no son indexados por Google. Con un plan pago, tu excavadora, tractor o camión puede aparecer cuando alguien busca "excavadora usada Paraguay" o "tractor agrícola en venta". Es la diferencia entre esperar que te encuentren y ser encontrado.</p>
+          </div>
+        </div>
       </div>
 
       {/* Directorio */}
