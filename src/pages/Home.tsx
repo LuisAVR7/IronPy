@@ -189,7 +189,7 @@ export default function Home() {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">✓ Vendedor verificado</span>
                   </div>
-                  <p className="text-sm text-gray-300">Los vendedores verificados generan más confianza y cierran más ventas. Es gratis y tarda menos de 2 minutos.</p>
+                  <p className="text-sm text-gray-300">Verificá tu identidad con tu cédula y obtené el sello ✓ que le indica a los compradores que sos un vendedor real y confiable. Es gratis y tarda menos de 2 minutos.</p>
                 </div>
                 <Link to="/perfil" className="flex-shrink-0 bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 whitespace-nowrap">
                   Verificar perfil

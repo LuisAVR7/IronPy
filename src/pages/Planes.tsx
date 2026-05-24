@@ -11,7 +11,7 @@ export default function Planes() {
         { texto: 'Anuncios ilimitados', incluido: true },
         { texto: '5 fotos por anuncio', incluido: true },
         { texto: 'Visible en el listado general', incluido: true },
-        { texto: 'Badge de vendedor verificado', incluido: true },
+        { texto: 'Sello de vendedor verificado', incluido: true },
         { texto: 'Anuncios destacados', incluido: false },
         { texto: 'Estadísticas de visitas', incluido: false },
         { texto: 'Indexado en Google', incluido: false },
@@ -32,7 +32,7 @@ export default function Planes() {
         { texto: 'Anuncios ilimitados', incluido: true },
         { texto: '10 fotos por anuncio', incluido: true },
         { texto: 'Anuncios destacados en el listado', incluido: true },
-        { texto: 'Badge de vendedor verificado', incluido: true },
+        { texto: 'Sello de vendedor verificado', incluido: true },
         { texto: 'Estadísticas básicas de visitas', incluido: true },
         { texto: 'Indexado en Google', incluido: true },
         { texto: 'Soporte prioritario', incluido: true },
@@ -53,7 +53,7 @@ export default function Planes() {
         { texto: 'Anuncios ilimitados', incluido: true },
         { texto: 'Fotos ilimitadas por anuncio', incluido: true },
         { texto: 'Primeros resultados siempre', incluido: true },
-        { texto: 'Badge de vendedor verificado', incluido: true },
+        { texto: 'Sello de vendedor verificado', incluido: true },
         { texto: 'Estadísticas completas de visitas', incluido: true },
         { texto: 'Indexado en Google', incluido: true },
         { texto: 'Soporte prioritario', incluido: true },
@@ -79,7 +79,7 @@ export default function Planes() {
             <span className="bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">✓ Vendedor verificado</span>
             <span className="text-xs text-green-700 font-medium">Disponible en todos los planes</span>
           </div>
-          <p className="text-sm text-green-700">Los compradores priorizan a los vendedores verificados. Verificá tu identidad gratis desde tu perfil y generá más confianza en cada anuncio.</p>
+          <p className="text-sm text-green-700">Verificá tu identidad con tu cédula y obtené el sello ✓ que le indica a los compradores que sos un vendedor real y confiable. Gratis desde tu perfil.</p>
         </div>
         <a href="/perfil" className="flex-shrink-0 bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 whitespace-nowrap">
           Verificar perfil
