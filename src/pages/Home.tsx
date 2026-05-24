@@ -178,14 +178,14 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex gap-3 justify-center">
-              <Link to="/anuncios" className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600">
-                Ver anuncios
-              </Link>
-              <Link to="/publicar" className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900">
-                Publicar gratis
-              </Link>
-            </div>
+           <div className="flex gap-3 justify-center">
+  <Link to="/anuncios" className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600">
+    Ver anuncios
+  </Link>
+  <Link to="/publicar" className="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:text-gray-900">
+    Publicar gratis
+  </Link>
+</div>
           </div>
         </div>
 
