@@ -1,20 +1,48 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { validarEmail, validarPassword, validarNombre, validarTelefono, useRateLimit } from '../lib/validaciones'
 
 export default function Registro() {
   const [nombre, setNombre] = useState('')
   const [email, setEmail] = useState('')
   const [telefono, setTelefono] = useState('')
   const [password, setPassword] = useState('')
+  const [errores, setErrores] = useState<Record<string, string>>({})
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [tiempoEspera, setTiempoEspera] = useState(0)
   const navigate = useNavigate()
+  const { puedeEnviar, registrarEnvio, tiempoRestante } = useRateLimit(30)
+
+  const validar = (): boolean => {
+    const nuevosErrores: Record<string, string> = {}
+    const errNombre = validarNombre(nombre)
+    const errEmail = validarEmail(email)
+    const errPassword = validarPassword(password)
+    const errTelefono = validarTelefono(telefono)
+    if (errNombre) nuevosErrores.nombre = errNombre
+    if (errEmail) nuevosErrores.email = errEmail
+    if (errPassword) nuevosErrores.password = errPassword
+    if (errTelefono) nuevosErrores.telefono = errTelefono
+    setErrores(nuevosErrores)
+    return Object.keys(nuevosErrores).length === 0
+  }
 
   const handleRegistro = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validar()) return
+
+    if (!puedeEnviar('registro')) {
+      const restante = tiempoRestante('registro')
+      setTiempoEspera(restante)
+      setError(`Esperá ${restante} segundos antes de intentar de nuevo.`)
+      return
+    }
+
     setLoading(true)
     setError('')
+    registrarEnvio('registro')
 
     const { data, error } = await supabase.auth.signUp({ email, password })
 
@@ -56,10 +84,10 @@ export default function Registro() {
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              required
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.nombre ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
               placeholder="Juan Pérez"
             />
+            {errores.nombre && <p className="text-xs text-red-500 mt-1">{errores.nombre}</p>}
           </div>
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1">Email</label>
@@ -67,10 +95,10 @@ export default function Registro() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.email ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
               placeholder="tu@email.com"
             />
+            {errores.email && <p className="text-xs text-red-500 mt-1">{errores.email}</p>}
           </div>
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1">Teléfono</label>
@@ -78,9 +106,10 @@ export default function Registro() {
               type="tel"
               value={telefono}
               onChange={(e) => setTelefono(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.telefono ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
               placeholder="0981 000 000"
             />
+            {errores.telefono && <p className="text-xs text-red-500 mt-1">{errores.telefono}</p>}
           </div>
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1">Contraseña</label>
@@ -88,11 +117,10 @@ export default function Registro() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.password ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
               placeholder="Mínimo 6 caracteres"
             />
+            {errores.password && <p className="text-xs text-red-500 mt-1">{errores.password}</p>}
           </div>
           <button
             type="submit"

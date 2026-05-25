@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { validarTitulo, validarPrecio, useRateLimit } from '../lib/validaciones'
 
 export default function PublicarAnuncio() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [errores, setErrores] = useState<Record<string, string>>({})
   const [fotos, setFotos] = useState<File[]>([])
   const navigate = useNavigate()
+  const { puedeEnviar, registrarEnvio, tiempoRestante } = useRateLimit(60)
 
   const [form, setForm] = useState({
     titulo: '',
@@ -48,20 +51,43 @@ export default function PublicarAnuncio() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
+    if (errores[e.target.name]) {
+      setErrores({ ...errores, [e.target.name]: '' })
+    }
   }
 
   const handleFotos = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setFotos(Array.from(e.target.files).slice(0, 5))
   }
 
+  const validar = (): boolean => {
+    const nuevosErrores: Record<string, string> = {}
+    const errTitulo = validarTitulo(form.titulo)
+    const errPrecio = validarPrecio(form.precio)
+    if (errTitulo) nuevosErrores.titulo = errTitulo
+    if (errPrecio) nuevosErrores.precio = errPrecio
+    if (!form.categoria_id) nuevosErrores.categoria_id = 'Seleccioná una categoría'
+    if (!form.departamento) nuevosErrores.departamento = 'Seleccioná un departamento'
+    setErrores(nuevosErrores)
+    return Object.keys(nuevosErrores).length === 0
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validar()) return
+
+    if (!puedeEnviar('publicar')) {
+      const restante = tiempoRestante('publicar')
+      setError(`Esperá ${restante} segundos antes de publicar otro anuncio.`)
+      return
+    }
+
     setLoading(true)
     setError('')
+    registrarEnvio('publicar')
 
     try {
       const fotosUrls: string[] = []
-
       for (const foto of fotos) {
         const ext = foto.name.split('.').pop()
         const path = `${user.id}/${Date.now()}.${ext}`
@@ -119,21 +145,21 @@ export default function PublicarAnuncio() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-        {/* Información del equipo */}
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="font-medium text-gray-900 mb-4">Información del equipo</h2>
           <div className="flex flex-col gap-4">
             <div>
               <label className="text-sm font-medium text-gray-700 block mb-1">Título *</label>
-              <input name="titulo" value={form.titulo} onChange={handleChange} required
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              <input name="titulo" value={form.titulo} onChange={handleChange}
+                className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.titulo ? 'border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
                 placeholder="Ej: Excavadora Komatsu PC200 2018" />
+              {errores.titulo && <p className="text-xs text-red-500 mt-1">{errores.titulo}</p>}
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1">Categoría *</label>
-                <select name="categoria_id" value={form.categoria_id} onChange={handleChange} required
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
+                <select name="categoria_id" value={form.categoria_id} onChange={handleChange}
+                  className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.categoria_id ? 'border-red-400' : 'border-gray-200 focus:border-orange-500'}`}>
                   <option value="">Seleccionar</option>
                   <option value="1">Maquinaria de construcción</option>
                   <option value="2">Maquinaria agrícola</option>
@@ -141,6 +167,7 @@ export default function PublicarAnuncio() {
                   <option value="4">Implementos y accesorios</option>
                   <option value="5">Repuestos</option>
                 </select>
+                {errores.categoria_id && <p className="text-xs text-red-500 mt-1">{errores.categoria_id}</p>}
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1">Estado</label>
@@ -208,17 +235,17 @@ export default function PublicarAnuncio() {
           </div>
         </div>
 
-        {/* Ubicación */}
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="font-medium text-gray-900 mb-4">Ubicación</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm font-medium text-gray-700 block mb-1">Departamento *</label>
-              <select name="departamento" value={form.departamento} onChange={handleChange} required
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500">
+              <select name="departamento" value={form.departamento} onChange={handleChange}
+                className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.departamento ? 'border-red-400' : 'border-gray-200 focus:border-orange-500'}`}>
                 <option value="">Seleccionar</option>
                 {departamentos.map((d) => <option key={d} value={d}>{d}</option>)}
               </select>
+              {errores.departamento && <p className="text-xs text-red-500 mt-1">{errores.departamento}</p>}
             </div>
             <div>
               <label className="text-sm font-medium text-gray-700 block mb-1">Ciudad</label>
@@ -229,7 +256,6 @@ export default function PublicarAnuncio() {
           </div>
         </div>
 
-        {/* Precio y forma de pago */}
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="font-medium text-gray-900 mb-4">Precio y forma de pago</h2>
           <div className="flex flex-col gap-4">
@@ -239,9 +265,12 @@ export default function PublicarAnuncio() {
                 <option value="USD">USD</option>
                 <option value="PYG">PYG</option>
               </select>
-              <input name="precio" value={form.precio} onChange={handleChange} type="number"
-                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
-                placeholder="Precio" />
+              <div className="flex-1">
+                <input name="precio" value={form.precio} onChange={handleChange} type="number"
+                  className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.precio ? 'border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
+                  placeholder="Precio" />
+                {errores.precio && <p className="text-xs text-red-500 mt-1">{errores.precio}</p>}
+              </div>
             </div>
             <div>
               <label className="text-sm font-medium text-gray-700 block mb-1">Forma de pago</label>
@@ -263,7 +292,6 @@ export default function PublicarAnuncio() {
           </div>
         </div>
 
-        {/* Fotos */}
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="font-medium text-gray-900 mb-4">Fotos (máx. 5)</h2>
           <input type="file" accept="image/*" multiple onChange={handleFotos}
@@ -277,7 +305,6 @@ export default function PublicarAnuncio() {
           )}
         </div>
 
-        {/* Contacto */}
         <div className="bg-white border border-gray-200 rounded-xl p-5">
           <h2 className="font-medium text-gray-900 mb-4">Datos de contacto</h2>
           <div className="flex flex-col gap-4">

@@ -1,18 +1,41 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { validarEmail, validarPassword, useRateLimit } from '../lib/validaciones'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errores, setErrores] = useState<Record<string, string>>({})
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { puedeEnviar, registrarEnvio, tiempoRestante } = useRateLimit(15)
+
+  const validar = (): boolean => {
+    const nuevosErrores: Record<string, string> = {}
+    const errEmail = validarEmail(email)
+    const errPassword = validarPassword(password)
+    if (errEmail) nuevosErrores.email = errEmail
+    if (errPassword) nuevosErrores.password = errPassword
+    setErrores(nuevosErrores)
+    return Object.keys(nuevosErrores).length === 0
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validar()) return
+
+    if (!puedeEnviar('login')) {
+      const restante = tiempoRestante('login')
+      setError(`Esperá ${restante} segundos antes de intentar de nuevo.`)
+      return
+    }
+
     setLoading(true)
     setError('')
+    registrarEnvio('login')
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) {
       setError('Email o contraseña incorrectos.')
@@ -43,10 +66,10 @@ export default function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.email ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
               placeholder="tu@email.com"
             />
+            {errores.email && <p className="text-xs text-red-500 mt-1">{errores.email}</p>}
           </div>
           <div>
             <label className="text-sm font-medium text-gray-700 block mb-1">Contraseña</label>
@@ -54,10 +77,10 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-orange-500"
+              className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none ${errores.password ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-orange-500'}`}
               placeholder="••••••••"
             />
+            {errores.password && <p className="text-xs text-red-500 mt-1">{errores.password}</p>}
           </div>
           <button
             type="submit"
