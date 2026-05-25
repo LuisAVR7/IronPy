@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { supabase } from '../lib/supabase'
 import { formatPrecio } from '../lib/utils'
+import Valoraciones from '../components/Valoraciones'
 
 export default function DetalleAnuncio() {
   const { id } = useParams()
@@ -316,6 +317,15 @@ export default function DetalleAnuncio() {
                 <p className="text-sm text-gray-600 leading-relaxed">{anuncio.descripcion}</p>
               </div>
             )}
+            {/* Valoraciones */}
+<div className="mb-4">
+  <p className="text-sm font-medium text-gray-700 mb-3">Valoraciones del vendedor</p>
+  <Valoraciones
+    vendedorId={anuncio.user_id}
+    anuncioId={anuncio.id}
+    mostrarFormulario={true}
+  />
+</div>
 
             {/* Contacto */}
             {user ? (
