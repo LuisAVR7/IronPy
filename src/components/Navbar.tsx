@@ -63,7 +63,7 @@ export default function Navbar() {
   const fetchPerfil = async (userId: string) => {
     const { data } = await supabase
       .from('profiles')
-      .select('nombre')
+      .select('nombre, es_admin')
       .eq('id', userId)
       .single()
     setPerfil(data)
@@ -108,6 +108,12 @@ export default function Navbar() {
                     className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
                     👤 Mi perfil
                   </Link>
+                  {perfil?.es_admin && (
+                    <Link to="/admin" onClick={() => setMenuAbierto(false)}
+                      className="block px-4 py-3 text-sm text-orange-600 hover:bg-orange-50 border-b border-gray-100 font-medium">
+                      ⚙️ Panel admin
+                    </Link>
+                  )}
                   <button onClick={handleLogout}
                     className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50">
                     🚪 Cerrar sesión

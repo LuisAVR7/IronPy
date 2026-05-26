@@ -11,6 +11,7 @@ import Perfil from './pages/Perfil'
 import Terminos from './pages/Terminos'
 import Privacidad from './pages/Privacidad'
 import Planes from './pages/Planes'
+import Admin from './pages/Admin'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/terminos" element={<Terminos />} />
             <Route path="/privacidad" element={<Privacidad />} />
             <Route path="/planes" element={<Planes />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
         <Footer />
