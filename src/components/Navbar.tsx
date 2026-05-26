@@ -63,7 +63,7 @@ export default function Navbar() {
   const fetchPerfil = async (userId: string) => {
     const { data } = await supabase
       .from('profiles')
-      .select('nombre, es_admin')
+      .select('nombre, es_admin, plan')
       .eq('id', userId)
       .single()
     setPerfil(data)
@@ -75,6 +75,8 @@ export default function Navbar() {
     navigate('/')
   }
 
+  const esPremium = perfil?.plan === 'premium' || perfil?.es_admin
+
   return (
     <nav className="bg-gray-900 border-b border-gray-700 px-4 py-2">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -84,6 +86,11 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link to="/anuncios" className="text-sm text-gray-300 hover:text-white">Anuncios</Link>
           <Link to="/planes" className="text-sm text-gray-300 hover:text-white">Planes</Link>
+          {esPremium && (
+            <Link to="/directorio" className="text-sm text-orange-400 hover:text-orange-300 font-medium">
+              Directorio
+            </Link>
+          )}
           {user ? (
             <div className="relative">
               <button
@@ -108,6 +115,12 @@ export default function Navbar() {
                     className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100">
                     👤 Mi perfil
                   </Link>
+                  {esPremium && (
+                    <Link to="/directorio" onClick={() => setMenuAbierto(false)}
+                      className="block px-4 py-3 text-sm text-orange-600 hover:bg-orange-50 border-b border-gray-100 font-medium">
+                      📋 Directorio Premium
+                    </Link>
+                  )}
                   {perfil?.es_admin && (
                     <Link to="/admin" onClick={() => setMenuAbierto(false)}
                       className="block px-4 py-3 text-sm text-orange-600 hover:bg-orange-50 border-b border-gray-100 font-medium">
