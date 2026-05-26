@@ -11,7 +11,7 @@ export default function Registro() {
   const [errores, setErrores] = useState<Record<string, string>>({})
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [tiempoEspera, setTiempoEspera] = useState(0)
+  const [_tiempoEspera, setTiempoEspera] = useState(0)
   const navigate = useNavigate()
   const { puedeEnviar, registrarEnvio, tiempoRestante } = useRateLimit(30)
 
