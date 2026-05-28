@@ -35,9 +35,9 @@ function Logo() {
       <circle cx="119" cy="45" r="1" fill="#F97316"/>
       <rect x="134" y="10" width="1.5" height="32" rx="0.5" fill="#F97316" opacity="0.4"/>
       <text x="142" y="34" fontFamily="Arial Black, sans-serif" fontSize="22" fontWeight="900" fill="white">Maq</text>
-      <text x="186" y="34" fontFamily="Arial Black, sans-serif" fontSize="22" fontWeight="900" fill="#F97316">Market</text>
+      <text x="190" y="34" fontFamily="Arial Black, sans-serif" fontSize="22" fontWeight="900" fill="#F97316">Market</text>
       <text x="142" y="47" fontFamily="Arial, sans-serif" fontSize="6" fill="#9CA3AF" letterSpacing="0.8">MAQUINARIAS PESADAS Y CAMIONES</text>
-    </svg>
+      </svg>
   )
 }
 
