@@ -143,7 +143,7 @@ export default function Directorio() {
                     </td>
                     <td className="px-4 py-3">
                       {contacto.telefono ? (
-                        <a href={`https://wa.me/595${contacto.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, te contacto a través del directorio de IronPY.')}`}
+                        <a href={`https://wa.me/595${contacto.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, te contacto a través del directorio de MaqMarket.')}`}
                           target="_blank" rel="noopener noreferrer"
                           className="text-sm text-green-600 hover:underline flex items-center gap-1">
                           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">

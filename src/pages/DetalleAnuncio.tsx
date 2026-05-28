@@ -57,7 +57,7 @@ export default function DetalleAnuncio() {
   const handleWhatsApp = () => {
     if (!anuncio?.contacto_telefono) return
     const telefono = anuncio.contacto_telefono.replace(/\D/g, '')
-    const mensaje = encodeURIComponent(`Hola, estoy interesado en tu anuncio: ${anuncio.titulo} publicado en IronPY.`)
+    const mensaje = encodeURIComponent(`Hola, estoy interesado en tu anuncio: ${anuncio.titulo} publicado en MaqMarket.`)
     window.open(`https://wa.me/595${telefono}?text=${mensaje}`, '_blank')
   }
 
@@ -85,7 +85,7 @@ export default function DetalleAnuncio() {
 
         if (anuncio?.contacto_telefono) {
           const telefono = anuncio.contacto_telefono.replace(/\D/g, '')
-          const mensaje = encodeURIComponent(`Hola, un usuario de IronPY ha cargado su cédula y está formalmente interesado en tu anuncio: ${anuncio.titulo}. Ingresá a tu panel para ver los detalles.`)
+          const mensaje = encodeURIComponent(`Hola, un usuario de MaqMarket ha cargado su cédula y está formalmente interesado en tu anuncio: ${anuncio.titulo}. Ingresá a tu panel para ver los detalles.`)
           window.open(`https://wa.me/595${telefono}?text=${mensaje}`, '_blank')
         }
         setCedulaSubida(true)
@@ -136,7 +136,7 @@ export default function DetalleAnuncio() {
   }
 
   const handleCompartirWhatsApp = () => {
-    const texto = encodeURIComponent(`${anuncio.titulo} — ${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — Ver en IronPY: ${window.location.href}`)
+    const texto = encodeURIComponent(`${anuncio.titulo} — ${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — Ver en MaqMarket: ${window.location.href}`)
     window.open(`https://wa.me/?text=${texto}`, '_blank')
   }
 
@@ -175,9 +175,9 @@ export default function DetalleAnuncio() {
   return (
     <>
       <Helmet>
-        <title>{anuncio.titulo} — IronPY</title>
-        <meta name="description" content={`${anuncio.marca || ''} ${anuncio.modelo || ''} ${anuncio.año || ''} — ${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — ${anuncio.departamento} — IronPY Maquinarias Paraguay`} />
-        <meta property="og:title" content={`${anuncio.titulo} — IronPY`} />
+        <title>{anuncio.titulo} — MaqMarket</title>
+        <meta name="description" content={`${anuncio.marca || ''} ${anuncio.modelo || ''} ${anuncio.año || ''} — ${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — ${anuncio.departamento} — MaqMarket Maquinarias Paraguay`} />
+        <meta property="og:title" content={`${anuncio.titulo} — MaqMarket`} />
         <meta property="og:description" content={`${anuncio.moneda} ${anuncio.precio?.toLocaleString('es-PY')} — ${anuncio.departamento}`} />
         {anuncio.fotos?.[0] && <meta property="og:image" content={anuncio.fotos[0]} />}
         <meta property="og:url" content={window.location.href} />

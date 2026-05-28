@@ -127,13 +127,13 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>IronPY — Maquinarias pesadas y camiones en Paraguay</title>
-        <meta name="description" content="El clasificado local especializado en maquinaria de construcción, agrícola y camiones en Paraguay. Comprá y vendé maquinaria usada con vendedores locales." />
-        <meta property="og:title" content="IronPY — Maquinarias pesadas y camiones en Paraguay" />
-        <meta property="og:description" content="Comprá y vendé maquinaria pesada en Paraguay. Excavadoras, tractores, camiones, implementos y repuestos." />
-        <meta property="og:url" content="https://iron-py.vercel.app" />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+  <title>MaqMarket — Maquinarias pesadas y camiones en Paraguay</title>
+  <meta name="description" content="El clasificado local especializado en maquinaria de construcción, agrícola y camiones en Paraguay. Comprá y vendé maquinaria usada con vendedores locales." />
+  <meta property="og:title" content="MaqMarket — Maquinarias pesadas y camiones en Paraguay" />
+  <meta property="og:description" content="Comprá y vendé maquinaria pesada en Paraguay. Excavadoras, tractores, camiones, implementos y repuestos." />
+  <meta property="og:url" content="https://maqmarket.com.py" />
+  <meta name="robots" content="index, follow" />
+</Helmet>
 
       <div>
         {/* Hero */}
@@ -189,8 +189,7 @@ export default function Home() {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="bg-green-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">✓ Vendedor verificado</span>
                   </div>
-                  <p className="text-sm text-gray-300">Verificá tu identidad con tu cédula y obtené el sello ✓ que le indica a los compradores que sos un vendedor real y confiable. Es gratis y tarda menos de 2 minutos.</p>
-                </div>
+                  <p className="text-sm text-gray-300">Verificá tu identidad con tu cédula y obtené el sello ✓ que le indica a los compradores que sos un vendedor real y confiable en MaqMarket. Es gratis y tarda menos de 2 minutos.</p>
                 <Link to="/perfil" className="flex-shrink-0 bg-green-500 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-green-600 whitespace-nowrap">
                   Verificar perfil
                 </Link>

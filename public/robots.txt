@@ -11,4 +11,4 @@ Disallow: /mis-anuncios
 Disallow: /perfil
 Disallow: /publicar
 
-Sitemap: https://iron-py.vercel.app/sitemap.xml
+Sitemap: https://maqmarket.com.py/sitemap.xml

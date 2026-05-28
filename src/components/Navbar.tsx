@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 function Logo() {
   return (
-    <svg width="260" height="52" viewBox="0 0 260 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="280" height="52" viewBox="0 0 280 52" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="16" cy="36" r="12" fill="none" stroke="#F97316" strokeWidth="2"/>
       <circle cx="16" cy="36" r="5" fill="none" stroke="#F97316" strokeWidth="1.5"/>
       <circle cx="16" cy="36" r="1.5" fill="#F97316"/>
@@ -34,9 +34,9 @@ function Logo() {
       <circle cx="119" cy="45" r="2.5" fill="none" stroke="#F97316" strokeWidth="1.5"/>
       <circle cx="119" cy="45" r="1" fill="#F97316"/>
       <rect x="134" y="10" width="1.5" height="32" rx="0.5" fill="#F97316" opacity="0.4"/>
-      <text x="142" y="34" fontFamily="Arial Black, sans-serif" fontSize="24" fontWeight="900" fill="white">Iron</text>
-      <text x="200" y="34" fontFamily="Arial Black, sans-serif" fontSize="24" fontWeight="900" fill="#F97316">PY</text>
-      <text x="142" y="46" fontFamily="Arial, sans-serif" fontSize="7.5" fill="#9CA3AF" letterSpacing="1.5">MAQUINARIAS PESADAS Y CAMIONES</text>
+      <text x="142" y="34" fontFamily="Arial Black, sans-serif" fontSize="22" fontWeight="900" fill="white">Maq</text>
+      <text x="186" y="34" fontFamily="Arial Black, sans-serif" fontSize="22" fontWeight="900" fill="#F97316">Market</text>
+      <text x="142" y="47" fontFamily="Arial, sans-serif" fontSize="7.5" fill="#9CA3AF" letterSpacing="1.5">MAQUINARIAS PESADAS Y CAMIONES</text>
     </svg>
   )
 }

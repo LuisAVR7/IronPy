@@ -74,7 +74,7 @@ export default function Anuncios() {
   return (
     <>
       <Helmet>
-        <title>Anuncios — IronPY Maquinarias Paraguay</title>
+        <title>Anuncios — MaqMarket Maquinarias Paraguay</title>
         <meta name="description" content="Buscá maquinaria de construcción, agrícola, camiones, implementos y repuestos en Paraguay. Filtros por categoría, departamento, marca y precio." />
         <meta name="robots" content="index, follow" />
       </Helmet>

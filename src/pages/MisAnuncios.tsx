@@ -170,7 +170,7 @@ export default function MisAnuncios() {
                             </div>
                           )}
                           {interesado.profiles?.telefono && (
-                            <a href={`https://wa.me/595${interesado.profiles.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, te contacto desde IronPY en relación a tu interés en mi anuncio.')}`}
+                            <a href={`https://wa.me/595${interesado.profiles.telefono.replace(/\D/g, '')}?text=${encodeURIComponent('Hola, te contacto desde MaqMarket en relación a tu interés en mi anuncio.')}`}
                               target="_blank" rel="noopener noreferrer"
                               className="text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600">
                               WhatsApp

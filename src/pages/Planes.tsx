@@ -123,7 +123,7 @@ export default function Planes() {
               </a>
             ) : (
               <button
-                onClick={() => window.open(`https://wa.me/595XXXXXXXXX?text=${encodeURIComponent(`Hola, estoy interesado en el plan ${plan.nombre} de IronPY.`)}`, '_blank')}
+                onClick={() => window.open(`https://wa.me/595XXXXXXXXX?text=${encodeURIComponent(`Hola, estoy interesado en el plan ${plan.nombre} de MaqMarket.`)}`, '_blank')}
                 className={`w-full py-2.5 rounded-lg text-sm font-medium ${plan.estilo}`}>
                 {plan.boton}
               </button>
@@ -150,7 +150,7 @@ export default function Planes() {
           Accedé a más de 2.000 contactos del sector construcción en Paraguay: constructoras, contratistas, empresas de materiales y metalúrgicas. Disponible exclusivamente para el plan Premium.
         </p>
         <button
-          onClick={() => window.open(`https://wa.me/595XXXXXXXXX?text=${encodeURIComponent('Hola, quiero más información sobre el directorio de constructoras de IronPY.')}`, '_blank')}
+          onClick={() => window.open(`https://wa.me/595XXXXXXXXX?text=${encodeURIComponent('Hola, quiero más información sobre el directorio de constructoras de MaqMarket.')}`, '_blank')}
           className="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600">
           Consultar acceso al directorio
         </button>

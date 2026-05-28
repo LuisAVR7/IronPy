@@ -9,21 +9,21 @@ export default function Privacidad() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">1. Responsable del tratamiento</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            IronPY es responsable del tratamiento de los datos personales recopilados a través de la plataforma, en cumplimiento de la <strong>Ley N° 7.593/2025 de Protección de Datos Personales</strong> de la República del Paraguay y la <strong>Ley N° 4.868/2013 de Comercio Electrónico</strong>.
+            MaqMarket es responsable del tratamiento de los datos personales recopilados a través de la plataforma, en cumplimiento de la <strong>Ley N° 7.593/2025 de Protección de Datos Personales</strong> de la República del Paraguay y la <strong>Ley N° 4.868/2013 de Comercio Electrónico</strong>.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">2. Datos que recopilamos</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            IronPY recopila los siguientes datos personales: nombre completo, dirección de correo electrónico y número de teléfono al momento del registro; información de los anuncios publicados incluyendo fotos, descripción y datos de contacto; y documentos de identidad cargados voluntariamente por usuarios interesados en un anuncio.
+            MaqMarket recopila los siguientes datos personales: nombre completo, dirección de correo electrónico y número de teléfono al momento del registro; información de los anuncios publicados incluyendo fotos, descripción y datos de contacto; y documentos de identidad cargados voluntariamente por usuarios interesados en un anuncio.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">3. Finalidad del tratamiento</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            Los datos recopilados se utilizan exclusivamente para: gestionar el registro y la cuenta del usuario, permitir la publicación y visualización de anuncios, facilitar el contacto entre compradores y vendedores, y verificar la identidad de los usuarios que expresan interés formal en un anuncio. IronPY no utiliza los datos para fines publicitarios de terceros ni los cede a empresas externas.
+            Los datos recopilados se utilizan exclusivamente para: gestionar el registro y la cuenta del usuario, permitir la publicación y visualización de anuncios, facilitar el contacto entre compradores y vendedores, y verificar la identidad de los usuarios que expresan interés formal en un anuncio. MaqMarket no utiliza los datos para fines publicitarios de terceros ni los cede a empresas externas.
           </p>
         </section>
 
@@ -51,21 +51,21 @@ export default function Privacidad() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">7. Seguridad de los datos</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            IronPY implementa medidas técnicas y organizativas para proteger los datos personales contra accesos no autorizados, pérdida o destrucción. Los datos son almacenados en Supabase, plataforma que cumple con estándares internacionales de seguridad. Sin embargo, ningún sistema es completamente infalible y el usuario acepta este riesgo inherente al uso de plataformas digitales.
+            MaqMarket implementa medidas técnicas y organizativas para proteger los datos personales contra accesos no autorizados, pérdida o destrucción. Los datos son almacenados en Supabase, plataforma que cumple con estándares internacionales de seguridad. Sin embargo, ningún sistema es completamente infalible y el usuario acepta este riesgo inherente al uso de plataformas digitales.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">8. Cookies</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            IronPY utiliza cookies técnicas necesarias para el funcionamiento de la plataforma, como la gestión de sesiones de usuario. No se utilizan cookies de seguimiento ni publicitarias de terceros.
+            MaqMarket utiliza cookies técnicas necesarias para el funcionamiento de la plataforma, como la gestión de sesiones de usuario. No se utilizan cookies de seguimiento ni publicitarias de terceros.
           </p>
         </section>
 
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">9. Modificaciones</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
-            IronPY se reserva el derecho de actualizar esta Política de Privacidad para adaptarla a cambios normativos o del servicio. Las modificaciones serán publicadas en esta página con indicación de la fecha de actualización.
+            MaqMarket se reserva el derecho de actualizar esta Política de Privacidad para adaptarla a cambios normativos o del servicio. Las modificaciones serán publicadas en esta página con indicación de la fecha de actualización.
           </p>
         </section>
 
